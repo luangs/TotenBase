@@ -7,6 +7,9 @@ import com.github.rrsystems.utilsplus.android.UtilsPlus;
 
 import java.lang.reflect.Method;
 
+import br.com.luan.totenbase.model.Search;
+import io.realm.Realm;
+
 public class MainActivity extends BaseActivity {
 
     @Override
@@ -15,6 +18,16 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         showDebugDBAddressLogToast(this);
+        Realm realm = Realm.getInstance(MyApplication.getInstance().configurationSurvey());
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Search search = new Search(true);
+                realm.copyToRealmOrUpdate(search);
+            }
+        });
+
+
     }
 
     public static void showDebugDBAddressLogToast(Context context) {
